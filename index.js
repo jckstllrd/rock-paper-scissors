@@ -13,46 +13,58 @@ function getComputerChoice() {
   return compChoice;
 }
 
-function getHumanChoice() {
-  let humanChoice = prompt("Give me answers");
-
-  return humanChoice;
-}
-
 let humanScore = 0;
 let computerScore = 0;
 
+function displayScore(humanScore, computerScore) {
+  resultsDiv = document.querySelector(".results");
+  console.log(resultsDiv);
+  resultsDiv.textContent =
+    "Human: " + humanScore + "\nComputer: " + computerScore;
+}
+
 function playRound(humanChoice, computerChoice) {
+  humanChoice = humanChoice.toLowerCase();
+  computerChoice = computerChoice.toLowerCase();
+
+  console.log(humanChoice + " vs. " + computerChoice);
+
+  if (humanChoice === computerChoice) {
+    displayScore(humanScore, computerScore);
+  }
+
   if (humanChoice == "rock" && computerChoice == "paper") {
     computerScore++;
-    console.log("Human: " + humanScore + "Computer: " + computerScore);
+    displayScore(humanScore, computerScore);
   } else if (humanChoice == "rock" && computerChoice == "scissors") {
     humanScore++;
-    console.log("Human: " + humanScore + "Computer: " + computerScore);
-  } else if (humanChoice == "rock" && computerChoice == "rock") {
-    console.log("Draw");
+    displayScore(humanScore, computerScore);
   } else if (humanChoice == "paper" && computerChoice == "rock") {
     humanScore++;
-    console.log("Human: " + humanScore + "Computer: " + computerScore);
+    displayScore(humanScore, computerScore);
   } else if (humanChoice == "paper" && computerChoice == "scissors") {
     computerScore++;
-    console.log("Human: " + humanScore + "Computer: " + computerScore);
-  } else if (humanChoice == "paper" && computerChoice == "paper") {
-    console.log("Draw");
+    displayScore(humanScore, computerScore);
   } else if (humanChoice == "scissors" && computerChoice == "rock") {
     computerChoice++;
-    console.log("Human: " + humanScore + "Computer: " + computerScore);
-  } else if (humanChoice == "scissors" && computerChoice == "scissors") {
-    humanScore++;
-    console.log("Draw");
+    displayScore(humanScore, computerScore);
   } else if (humanChoice == "scissors" && computerChoice == "paper") {
     humanScore++;
-    console.log("Human: " + humanScore + "Computer: " + computerScore);
+    displayScore(humanScore, computerScore);
+  }
+  if (humanScore == 5 || computerScore == 5) {
+    resultsDiv = document.querySelector(".results");
+    winner = document.createElement("h1");
+    winner.textContent = "We have a winner at 5 points!";
+    resultsDiv.appendChild(winner);
+    console.log("winner");
   }
 }
 
-playRound(getHumanChoice(), getComputerChoice());
-playRound(getHumanChoice(), getComputerChoice());
-playRound(getHumanChoice(), getComputerChoice());
-playRound(getHumanChoice(), getComputerChoice());
-playRound(getHumanChoice(), getComputerChoice());
+const buttons = document.querySelectorAll("button");
+
+buttons.forEach((button) => {
+  button.addEventListener("click", function (e) {
+    playRound(e.target.className, getComputerChoice());
+  });
+});
